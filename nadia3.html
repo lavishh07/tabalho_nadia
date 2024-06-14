@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros de Hipertensão</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .header {
+            background-color: burlywood;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            margin-bottom: 20px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+           
+        }
+        .header {
+    background-color: burlywood;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    margin-bottom: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    position: relative; 
+}
+
+.logo-img {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 50px; 
+    height: auto; 
+
+
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: burlywood;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #DAA520;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header">
+                
+                <img src="coração.png" alt="Logo" class="logo-img">
+            </div>
+            
+            <h1>Registros de Hipertensão</h1>
+            
+               
+        </div>
+        <form id="registroForm">
+            <label for="dataInput">Data:</label>
+            <input type="date" id="dataInput" required>
+            <label for="pressaoInput">Pressão Arterial:</label>
+            <input type="text" id="pressaoInput" required>
+            <label for="exercicioInput">Exercício:</label>
+            <input type="text" id="exercicioInput" required>
+            <label for="medicamentosInput">Medicamentos:</label>
+            <input type="text" id="medicamentosInput" required>
+            <button type="button" onclick="adicionarRegistro()">Adicionar Registro</button>
+        </form>
+        <table id="registrosTable">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Pressão Arterial</th>
+                    <th>Exercício</th>
+                    <th>Medicamentos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <nav>
+                    <a href="hh.html">Calendário</a>
+                  
+                </nav>
+            </tbody>
+        </table>
+        <div class="button-container">
+            <button onclick="limparRegistros()">Limpar Registros</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarRegistros();
+        });
+
+        function carregarRegistros() {
+            const registros = JSON.parse(localStorage.getItem('registros')) || [];
+            const tabela = document.getElementById('registrosTable').getElementsByTagName('tbody')[0];
+            tabela.innerHTML = ''; 
+
+            registros.forEach(registro => {
+                const novaLinha = tabela.insertRow();
+
+                const dataCelula = novaLinha.insertCell();
+                const pressaoCelula = novaLinha.insertCell();
+                const exercicioCelula = novaLinha.insertCell();
+                const medicamentosCelula = novaLinha.insertCell();
+
+                dataCelula.textContent = registro.data;
+                pressaoCelula.textContent = registro.pressao;
+                exercicioCelula.textContent = registro.exercicio;
+                medicamentosCelula.textContent = registro.medicamentos;
+            });
+        }
+
+        function adicionarRegistro() {
+            const data = document.getElementById('dataInput').value;
+            const pressao = document.getElementById('pressaoInput').value;
+            const exercicio = document.getElementById('exercicioInput').value;
+            const medicamentos = document.getElementById('medicamentosInput').value;
+
+            const novoRegistro = { data, pressao, exercicio, medicamentos };
+
+            const registros = JSON.parse(localStorage.getItem('registros')) || [];
+            registros.push(novoRegistro);
+
+            localStorage.setItem('registros', JSON.stringify(registros));
+
+            carregarRegistros(); 
+
+            document.getElementById('registroForm').reset();
+        }
+
+        function limparRegistros() {
+            localStorage.removeItem('registros');
+            carregarRegistros(); 
+        }
+    </script>
+</body>
+</html>
